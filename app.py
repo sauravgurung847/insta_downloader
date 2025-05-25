@@ -32,12 +32,13 @@ def media():
     folder = 'downloads'
     valid_extensions = ('.jpg', '.jpeg', '.png', '.mp4')
     media_files = [f for f in os.listdir(folder) if f.endswith(valid_extensions)]
-
     return render_template('media.html', files=media_files)
 
 @app.route('/download_file/<filename>')
 def download_file(filename):
     return send_from_directory('downloads', filename, as_attachment=True)
 
+# ✅ THIS PART IS ESSENTIAL FOR RENDER
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
