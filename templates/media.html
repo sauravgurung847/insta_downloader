@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Instagram Media</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 20px;
+      margin: 0;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 30px;
+    }
+
+    li {
+      margin: 10px 0;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .back {
+      margin-top: 30px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Your Instagram Media is Downloading...</h2>
+
+  <ul id="fileList">
+    {% for file in files %}
+      <li><a href="{{ url_for('download_file', filename=file) }}" download hidden>{{ file }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <p class="back"><a href="{{ url_for('home') }}">← Back to Home</a></p>
+
+  <script>
+    const links = document.querySelectorAll('#fileList a');
+    let delay = 1000;
+
+    links.forEach((link, index) => {
+      setTimeout(() => {
+        link.click();
+      }, delay * index);
+    });
+  </script>
+</body>
+</html>
