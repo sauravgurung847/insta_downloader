@@ -1,67 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Instagram Media</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Downloading Media...</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f9fafb;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 50px 20px;
-      margin: 0;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
     }
 
     h2 {
       color: #333;
+      padding: 10px 20px;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-top: 30px;
+    .notice {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 30px;
     }
 
-    li {
-      margin: 10px 0;
+    .hidden-links {
+      display: none;
     }
 
-    a {
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 6px solid #ccc;
+      border-top-color: #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .back-link {
+      margin-top: 20px;
+      font-size: 14px;
       color: #007bff;
       text-decoration: none;
-      font-size: 16px;
     }
 
-    a:hover {
+    .back-link:hover {
       text-decoration: underline;
-    }
-
-    .back {
-      margin-top: 30px;
-      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h2>Your Instagram Media is Downloading...</h2>
+  <div class="spinner"></div>
+  <h2>Downloading Your Media...</h2>
+  <p class="notice">Downloads should begin automatically. If not, <a class="back-link" href="{{ url_for('home') }}">go back</a> and try again.</p>
 
-  <ul id="fileList">
+  <div class="hidden-links" id="fileList">
     {% for file in files %}
-      <li><a href="{{ url_for('download_file', filename=file) }}" download hidden>{{ file }}</a></li>
+      <a href="{{ url_for('download_file', filename=file) }}" download></a>
     {% endfor %}
-  </ul>
-
-  <p class="back"><a href="{{ url_for('home') }}">← Back to Home</a></p>
+  </div>
 
   <script>
     const links = document.querySelectorAll('#fileList a');
-    let delay = 1000;
+    let delay = 1500; // delay between each file to avoid spam blocking
 
     links.forEach((link, index) => {
       setTimeout(() => {
-        link.click();
+        const clickEvent = new MouseEvent('click');
+        link.dispatchEvent(clickEvent);
       }, delay * index);
     });
   </script>
